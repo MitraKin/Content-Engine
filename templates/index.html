@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI PDF Reader - Read and Analyze Documents OFFLINE</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI PDF READER: Read and Analyze Documents OFFLINE</h1>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="chat-container" id="chatContainer">
+                    <div id="messages" class="messages">
+                        <!-- Messages will be displayed here -->
+                    </div>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="questionInput" placeholder="Enter a prompt here..." />
+                    <button id="sendBtn">Send</button>
+                    <button id="clearBtn" class="clear-btn">Clear</button>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="model-selector">
+                    <label for="modelSelect">Pick a model available locally on your system ↓</label>
+                    <select id="modelSelect">
+                        {% for model in models %}
+                            <option value="{{ model }}">{{ model }}</option>
+                        {% endfor %}
+                        {% if not models %}
+                            <option value="">No models available</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <div class="status-panel">
+                    <h3>System Status</h3>
+                    <div class="status-item">
+                        <span class="status-label">PDF Documents:</span>
+                        <span class="status-value" id="pdfStatus">
+                            {% if vector_db_ready %}
+                                <span class="status-ready">✓ Ready</span>
+                            {% else %}
+                                <span class="status-error">✗ Not Ready</span>
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Models Available:</span>
+                        <span class="status-value">{{ models|length }}</span>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <h3>How to Use</h3>
+                    <ol>
+                        <li>Select an AI model from the dropdown above</li>
+                        <li>Type your question in the input field</li>
+                        <li>Click "Send" or press Enter</li>
+                        <li>Wait for the AI to analyze the documents and respond</li>
+                    </ol>
+                    <p class="note">
+                        <strong>Note:</strong> This application processes PDF files from the Documents directory 
+                        and uses local Ollama models to answer questions based on the document content.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
