@@ -201,7 +201,7 @@ def ask_question():
     
     except Exception as e:
         logger.error(f"Error processing question: {e}")
-        return jsonify({'error': f'Error processing question: {str(e)}'}), 500
+        return jsonify({'error': 'An error occurred while processing your question. Please try again.'}), 500
 
 
 @app.route('/api/messages', methods=['GET'])
@@ -224,4 +224,6 @@ if __name__ == '__main__':
     initialize_app()
     
     # Run the Flask app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Note: Set debug=False in production and use a proper WSGI server like gunicorn
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(debug=debug_mode, host='0.0.0.0', port=5000)
