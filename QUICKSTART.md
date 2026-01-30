@@ -46,7 +46,11 @@ cp /path/to/your/document.pdf Documents/
 ## Step 4: Run the Application
 
 ```bash
-# Start the Flask server
+# Start the Flask server (binds to localhost by default)
+python app.py
+
+# Or to allow external access (e.g., from other devices on network):
+export FLASK_HOST=0.0.0.0
 python app.py
 ```
 
@@ -57,7 +61,7 @@ INFO - Available models: ('llama2',)
 INFO - Loading PDF files...
 INFO - Processing file: Documents/your-document.pdf
 INFO - Vector DB created from directory
- * Running on http://0.0.0.0:5000
+ * Running on http://127.0.0.1:5000
 ```
 
 ## Step 5: Use the Application

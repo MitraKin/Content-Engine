@@ -26,9 +26,13 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 
 ### 4. Environment Variables
 Recommended environment variables for production:
-- `SECRET_KEY`: Strong secret key for session encryption
+- `SECRET_KEY`: Strong secret key for session encryption (required for production)
 - `FLASK_DEBUG`: Should be false or unset in production
-- `DOCUMENTS_PATH`: Optional path to documents directory (defaults to ./Documents)
+- `FLASK_HOST`: Host to bind to (default: 127.0.0.1, use 0.0.0.0 for external access)
+- `CHROMA_PERSIST_DIRECTORY`: Directory for persistent vector database storage (default: ./chroma_db)
+- `OLLAMA_EMBEDDING_MODEL`: Ollama embedding model to use (default: nomic-embed-text)
+
+**Important:** Always set `SECRET_KEY` in production. Without it, sessions will not persist across server restarts.
 
 ## Systemd Service Example
 
@@ -43,6 +47,8 @@ After=network.target
 User=www-data
 WorkingDirectory=/path/to/Content-Engine
 Environment="SECRET_KEY=your-secret-key"
+Environment="FLASK_HOST=0.0.0.0"
+Environment="CHROMA_PERSIST_DIRECTORY=/var/lib/content-engine/chroma_db"
 Environment="FLASK_DEBUG=false"
 ExecStart=/usr/bin/gunicorn -w 4 -b 0.0.0.0:5000 app:app
 Restart=always

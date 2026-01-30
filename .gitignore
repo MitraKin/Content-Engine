@@ -50,3 +50,8 @@ instance/
 
 # Session files
 flask_session/
+
+# Environment variables
+.env
+.env.local
+.env.*.local

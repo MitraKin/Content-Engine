@@ -47,6 +47,8 @@ function displayMessage(content, role) {
     
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
+    // IMPORTANT: Only plain text should be passed as 'content'.
+    // If rich formatting (e.g., HTML/Markdown) is ever supported, sanitize 'content' before inserting.
     messageContent.textContent = content;
     
     messageDiv.appendChild(avatar);
@@ -96,7 +98,14 @@ async function sendQuestion() {
     // Disable send button and show loading state
     sendBtn.disabled = true;
     const originalText = sendBtn.textContent;
-    sendBtn.innerHTML = '<span class="loading"></span>';
+    // Remove all children from sendBtn
+    while (sendBtn.firstChild) {
+        sendBtn.removeChild(sendBtn.firstChild);
+    }
+    // Add loading spinner
+    const loadingSpan = document.createElement('span');
+    loadingSpan.className = 'loading';
+    sendBtn.appendChild(loadingSpan);
     
     try {
         const response = await fetch('/api/ask', {
